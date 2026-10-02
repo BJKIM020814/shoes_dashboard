@@ -1,0 +1,6 @@
+# 연결 설정 템플릿은 공유하고 실제 자격 증명은 제외한다.
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
