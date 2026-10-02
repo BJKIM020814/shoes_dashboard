@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dashboard/store_dashboard_page.dart';
+import 'information/store_information_page.dart';
+import 'inventory/store_inventory_page.dart';
+import 'orders/store_orders_page.dart';
+import 'pickup/pickup_confirmation_page.dart';
+import 'returns/return_management_page.dart';
+import 'statistics/store_statistics_page.dart';
 
 class StoreShellPage extends StatefulWidget {
   const StoreShellPage({super.key});
@@ -12,13 +19,23 @@ class _StoreShellPageState extends State<StoreShellPage> {
   int _selected = 0;
   final _menu = const [
     ('대시보드', Icons.grid_view_rounded),
-    ('주문 관리', Icons.receipt_long_outlined),
-    ('수령 확인', Icons.inventory_2_outlined),
+    ('수령 확인', Icons.qr_code_scanner),
     ('반품 처리', Icons.assignment_return_outlined),
     ('재고 관리', Icons.warehouse_outlined),
-    ('매출 현황', Icons.bar_chart_rounded),
+    ('주문 현황', Icons.receipt_long_outlined),
+    ('매장 통계', Icons.bar_chart_rounded),
     ('매장 정보', Icons.store_outlined),
   ];
+
+  Widget _page() => switch (_selected) {
+    0 => const StoreDashboardPage(),
+    1 => const PickupConfirmationPage(),
+    2 => const ReturnManagementPage(),
+    3 => const StoreInventoryPage(),
+    4 => const StoreOrdersPage(),
+    5 => const StoreStatisticsPage(),
+    _ => const StoreInformationPage(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +50,7 @@ class _StoreShellPageState extends State<StoreShellPage> {
               child: Column(
                 children: [
                   _topBar(showMenu: !wide),
-                  Expanded(child: _selected == 0 ? _dashboard() : _emptyPage()),
+                  Expanded(child: _page()),
                 ],
               ),
             ),
@@ -147,156 +164,6 @@ class _StoreShellPageState extends State<StoreShellPage> {
           child: Icon(Icons.person, color: _green),
         ),
       ],
-    ),
-  );
-
-  Widget _dashboard() => SingleChildScrollView(
-    padding: EdgeInsets.all(MediaQuery.sizeOf(context).width < 600 ? 18 : 28),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          '대리점 대시보드',
-          style: TextStyle(fontSize: 27, fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 7),
-        Text(
-          '강남점의 오늘 운영 현황을 빠르고 정확하게 확인하세요.',
-          style: TextStyle(color: Colors.blueGrey.shade600),
-        ),
-        const SizedBox(height: 24),
-        Wrap(
-          spacing: 14,
-          runSpacing: 14,
-          children: const [
-            _MetricCard('오늘 매출', '₩3,240,000', Icons.payments_outlined, '13%'),
-            _MetricCard('오늘 주문', '12건', Icons.shopping_bag_outlined, '3건'),
-            _MetricCard('현재 재고', '320개', Icons.inventory_2_outlined, '정상'),
-            _MetricCard(
-              '오늘 반품',
-              '2건',
-              Icons.assignment_return_outlined,
-              '확인 필요',
-            ),
-          ],
-        ),
-        const SizedBox(height: 24),
-        LayoutBuilder(
-          builder: (context, constraints) => constraints.maxWidth < 620
-              ? Column(
-                  children: [
-                    _todaySchedule(),
-                    const SizedBox(height: 18),
-                    _notice(),
-                  ],
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: _todaySchedule()),
-                    const SizedBox(width: 18),
-                    Expanded(child: _notice()),
-                  ],
-                ),
-        ),
-      ],
-    ),
-  );
-
-  Widget _todaySchedule() => _panel('오늘의 일정', const [
-    ('오전 수령 예약 5건', '09:00 · 12:00'),
-    ('오후 수령 예약 7건', '13:00 · 18:00'),
-    ('반품 접수 2건', '처리하기'),
-  ]);
-
-  Widget _notice() => _panel('공지사항', const [
-    ('신상품 입고 안내', '09.22'),
-    ('추석 연휴 운영 안내', '09.21'),
-    ('반품 정책 변경 안내', '09.20'),
-  ]);
-
-  Widget _panel(String title, List<(String, String)> items) => Container(
-    padding: const EdgeInsets.all(20),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border.all(color: const Color(0xffe4ebea)),
-      borderRadius: BorderRadius.circular(14),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(height: 12),
-        ...items.map(
-          (item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 11),
-            child: Row(
-              children: [
-                const Icon(Icons.check_circle_outline, size: 17, color: _green),
-                const SizedBox(width: 9),
-                Expanded(child: Text(item.$1)),
-                Text(
-                  item.$2,
-                  style: const TextStyle(color: Colors.blueGrey, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget _emptyPage() => Center(
-    child: Text(
-      '${_menu[_selected].$1} 화면을 준비하고 있습니다.',
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-    ),
-  );
-}
-
-class _MetricCard extends StatelessWidget {
-  const _MetricCard(this.label, this.value, this.icon, this.hint);
-  final String label, value, hint;
-  final IconData icon;
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    width: 188,
-    child: Container(
-      padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xffe4ebea)),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 21, color: const Color(0xff064d47)),
-          const SizedBox(height: 14),
-          Text(
-            label,
-            style: const TextStyle(color: Colors.blueGrey, fontSize: 12),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            hint,
-            style: const TextStyle(
-              color: Color(0xff168e5d),
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
     ),
   );
 }
