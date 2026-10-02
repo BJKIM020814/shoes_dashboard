@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864946455276",
+    "project_id": "shoe-20260930",
+    "storage_bucket": "shoe-20260930.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864946455276:android:48c5863e7b2b6ea5aa1bc9",
+        "android_client_info": {
+          "package_name": "com.example.bootcamp_teamproject_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYv4HzxB2jhwgH7Mo9a3To8mEMHbg_19Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
