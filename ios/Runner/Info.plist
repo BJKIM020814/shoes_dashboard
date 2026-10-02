@@ -6,6 +6,8 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>고객의 수령 QR 코드를 스캔하기 위해 카메라를 사용합니다.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Bootcamp Shoe Store Admin App</string>
 	<key>CFBundleExecutable</key>
