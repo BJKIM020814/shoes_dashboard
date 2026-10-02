@@ -10,9 +10,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bootcamp_shoe_store_admin_app/main.dart';
 
 void main() {
-  testWidgets('FITPICK admin shell renders', (WidgetTester tester) async {
+  testWidgets('role selection screen renders', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-    expect(find.text('✦ FITPICK'), findsOneWidget);
-    expect(find.text('주문 관리'), findsWidgets);
+    expect(find.text('SHOEFIT'), findsOneWidget);
+    expect(find.text('본사 관리자'), findsOneWidget);
+    expect(find.text('대리점 관리자'), findsOneWidget);
   });
 }

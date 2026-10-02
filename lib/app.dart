@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
-import 'features/hq/hq_shell_page.dart';
+import 'features/auth/login_page.dart';
 
 class FitpickApp extends StatefulWidget {
   const FitpickApp({super.key});
@@ -17,7 +17,7 @@ class _FitpickAppState extends State<FitpickApp> {
     theme: AppTheme.light(),
     darkTheme: AppTheme.dark(),
     themeMode: dark ? ThemeMode.dark : ThemeMode.light,
-    home: HqShellPage(
+    home: LoginPage(
       dark: dark,
       onThemeChanged: () => setState(() => dark = !dark),
     ),
