@@ -12,6 +12,7 @@ import 'sales/sales_page.dart';
 import 'sales_management/sales_management_page.dart';
 import 'dashboard/hq_dashboard_page.dart';
 import 'widgets/hq_page_frame.dart';
+import '../auth/hq_login_dialog.dart';
 
 class HqShellPage extends StatefulWidget {
   const HqShellPage({
@@ -235,67 +236,13 @@ class _HqShellPageState extends State<HqShellPage> {
   };
 
   Future<void> _editToken() async {
-    final controller = TextEditingController(text: HqApi.instance.token);
-    final formKey = GlobalKey<FormState>();
     final accepted = await showDialog<bool>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('본사 API 세션'),
-        content: SizedBox(
-          width: 440,
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: controller,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Bearer access token',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => value == null || value.trim().isEmpty
-                      ? '로그인 accessToken을 입력해 주세요.'
-                      : null,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  '고객 API 로그인에서 받은 토큰을 사용합니다. 직원 이메일 연결이 없으면 서버가 본사 접근을 거부합니다.',
-                  style: TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                Navigator.pop(dialogContext, true);
-              }
-            },
-            child: const Text('연결'),
-          ),
-          if (HqApi.instance.hasToken)
-            TextButton(
-              onPressed: () {
-                HqApi.instance.clearToken();
-                Navigator.pop(dialogContext, false);
-              },
-              child: const Text('해제'),
-            ),
-        ],
-      ),
+      barrierDismissible: false,
+      builder: (_) => const HqLoginDialog(),
     );
-    if (accepted == true) {
-      HqApi.instance.setToken(controller.text);
-      if (mounted) setState(() {});
+    if (accepted == true && mounted) {
+      setState(() => _selected = 0);
     }
-    controller.dispose();
   }
 }

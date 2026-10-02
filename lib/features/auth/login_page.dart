@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../hq/hq_shell_page.dart';
 import '../store/store_shell_page.dart';
+import 'hq_login_dialog.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({
@@ -94,7 +95,15 @@ class LoginPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () {
+          onTap: () async {
+            if (isHq) {
+              final accepted = await showDialog<bool>(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => const HqLoginDialog(),
+              );
+              if (accepted != true || !context.mounted) return;
+            }
             final page = isHq
                 ? HqShellPage(dark: dark, onThemeChanged: onThemeChanged)
                 : const StoreShellPage();
