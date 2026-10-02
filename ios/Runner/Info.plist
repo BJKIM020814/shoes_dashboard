@@ -30,9 +30,17 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<!-- Permit HTTP only to local-network hosts while the dev API has no TLS. -->
+		<!-- Allow the development API's HTTP endpoint only; do not disable ATS globally. -->
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>192.168.20.68</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>FITPICK 본사 API에 연결하기 위해 팀 네트워크에 접근합니다.</string>

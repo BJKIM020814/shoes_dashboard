@@ -35,8 +35,10 @@ class _SalesPageState extends State<SalesPage> {
     _sales = HqApi.instance.get(
       '/api/v1/headquarters/sales/summary',
       query: {
-        'start': start.toUtc().toIso8601String(),
-        'end': end.toUtc().toIso8601String(),
+        // MySQL p_date is a local DATETIME; preserve the picked calendar dates
+        // instead of shifting the query window to UTC.
+        'start': start.toIso8601String(),
+        'end': end.toIso8601String(),
         'group_by': _group,
       },
     );

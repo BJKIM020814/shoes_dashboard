@@ -10,7 +10,7 @@ class StoreApi {
 
   static const _base = String.fromEnvironment(
     'STORE_API_BASE',
-    defaultValue: 'http://localhost:8100',
+    defaultValue: 'http://192.168.20.68:8100',
   );
   static const dealerSeq = int.fromEnvironment(
     'STORE_DEALER_SEQ',
